@@ -25,6 +25,27 @@ const doc = {
       description: "Access to POF orders",
     },
   ],
+  components: {
+    schemas: {
+      userShema: {
+        firstName: "Alexander",
+        lastName: "Jones",
+        email: "Alexander@gmail.com",
+      },
+      updateUserShema: {
+        firstName: "Lucas",
+        lastName: "Jones",
+        email: "Lucas@gmail.com",
+      },
+      productShema: {
+        name: "apple",
+      },
+      orderSchema: {
+        products: ["product1Id", "product2Id", "product3Id"],
+        users: ["user1Id", "user2Id", "user3Id"],
+      },
+    },
+  },
 };
 const outputFile = "./swagger.json";
 const routes = ["../server.js"];
