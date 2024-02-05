@@ -93,7 +93,7 @@ export const updateProduct = async (req, res, next) => {
 
     res.status(200).json({
       message: "Product has been updated",
-      savedProduct: updatedProduct,
+      updatedProduct: updatedProduct,
     });
   } catch (error) {
     next(error);
