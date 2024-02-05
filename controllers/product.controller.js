@@ -16,6 +16,11 @@ export const getProducts = async (req, res, next) => {
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
+
+    if (products.length === 0) {
+      return next(errorHandler(404, "Product not found"));
+    }
+
     res.status(200).json(products);
   } catch (error) {
     next(error);
@@ -27,6 +32,17 @@ export const createProduct = async (req, res, next) => {
   // #swagger.tags = ['Product']
   // #swagger.summary = 'Create a new product'
   // #swagger.description = 'Create a new product with the provided data'
+  /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/productShema"
+                    }
+                }
+            }
+        }
+    */
   if (!req.body.name) {
     return next(errorHandler(400, "Please provide all required fields"));
   }
@@ -46,6 +62,17 @@ export const updateProduct = async (req, res, next) => {
   // #swagger.tags = ['Product']
   // #swagger.summary = 'Update a product'
   // #swagger.description = 'Update a product with the provided data'
+  /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/productShema"
+                    }
+                }
+            }
+        }
+    */
   if (!req.body.name) {
     return next(errorHandler(400, "Please provide all required fields"));
   }
@@ -59,6 +86,11 @@ export const updateProduct = async (req, res, next) => {
       },
       { new: true }
     );
+
+    if (!updatedProduct) {
+      return next(errorHandler(404, "Product not found"));
+    }
+
     res.status(200).json({
       message: "Product has been updated",
       savedProduct: updatedProduct,
