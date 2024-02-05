@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
 
-// Getting all users
+// Getting a user
 export const getUser = async (req, res) => {
   // #swagger.tags = ['User']
   // #swagger.summary = 'Get all users'
@@ -52,7 +52,9 @@ export const updateUser = async (req, res, next) => {
       },
       { new: true }
     );
-    res.status(200).json(updatedUser);
+    res
+      .status(200)
+      .json({ message: "Product has been updated", updatedUser: updatedUser });
   } catch (error) {
     next(error);
   }
@@ -64,8 +66,14 @@ export const deleteUser = async (req, res, next) => {
   // #swagger.summary = 'Delete a user'
   // #swagger.description = 'Delete a user with the provided data'
   try {
-    await User.findOneAndDelete(req.params.userId);
-    res.status(200).json("The user has been deleted");
+    const user = await User.findByIdAndDelete(req.params.userId);
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+    res.status(200).json({
+      message: "User has been deleted",
+      deletedUser: user,
+    });
   } catch (error) {
     next(error);
   }
