@@ -1,6 +1,6 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
-import server from "../server.js"
+import server from "../server.js";
 import User from "../models/user.model.js";
 const expect = chai.expect;
 chai.use(chaiHttp);
@@ -22,11 +22,10 @@ after(async () => {
 });
 
 describe("User API", () => {
-
   /* This is a test case that verifies that there are 0 users in the database. */
   it("should verify that we have 0 users in the DB", async () => {
     try {
-      const res = await chai.request(server).get("/api/user/")
+      const res = await chai.request(server).get("/api/user/");
       expect(res).to.have.status(404);
       expect(res.error.text).to.equal(
         '{"success":false,"statusCode":404,"message":"User not found"}'
