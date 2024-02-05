@@ -8,8 +8,8 @@ import {
 
 const router = express.Router();
 
-router.get("", getProducts);
-router.post("", createProduct);
+router.get("/", getProducts);
+router.post("/", createProduct);
 router.patch("/:productId", updateProduct);
 router.delete("/:productId", deleteProduct);
 
