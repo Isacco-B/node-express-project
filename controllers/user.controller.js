@@ -16,6 +16,11 @@ export const getUsers = async (req, res, next) => {
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
+
+    if (users.length === 0) {
+      return next(errorHandler(404, "User not found"));
+    }
+
     res.status(200).json(users);
   } catch (error) {
     next(error);
@@ -27,6 +32,17 @@ export const createUser = async (req, res, next) => {
   // #swagger.tags = ['User']
   // #swagger.summary = 'Create a new user'
   // #swagger.description = 'Create a new user with the provided data'
+  /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/userShema"
+                    }
+                }
+            }
+        }
+    */
   if (!req.body.firstName || !req.body.lastName || !req.body.email) {
     return next(errorHandler(400, "Please provide all required fields"));
   }
@@ -48,6 +64,17 @@ export const updateUser = async (req, res, next) => {
   // #swagger.tags = ['User']
   // #swagger.summary = 'Update a user'
   // #swagger.description = 'Update a user with the provided data'
+  /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/updateUserShema"
+                    }
+                }
+            }
+        }
+    */
   try {
     const updateFields = {};
 
