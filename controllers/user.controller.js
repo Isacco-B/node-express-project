@@ -2,12 +2,20 @@ import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
 
 // Getting a user
-export const getUser = async (req, res) => {
+export const getUsers = async (req, res, next) => {
   // #swagger.tags = ['User']
   // #swagger.summary = 'Get all users'
   // #swagger.description = 'Returns all users'
   try {
-    const users = await User.findById(req.params.userId);
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 10;
+    const sortDirection = req.query.sort === "desc" ? -1 : 1;
+    const users = await User.find({
+      ...(req.query.userId && { _id: req.query.userId }),
+    })
+      .sort({ updatedAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
     res.status(200).json(users);
   } catch (error) {
     next(error);
@@ -19,7 +27,7 @@ export const createUser = async (req, res, next) => {
   // #swagger.tags = ['User']
   // #swagger.summary = 'Create a new user'
   // #swagger.description = 'Create a new user with the provided data'
-  if (!req.body.firstName && !req.body.lastName && !req.body.email) {
+  if (!req.body.firstName || !req.body.lastName || !req.body.email) {
     return next(errorHandler(400, "Please provide all required fields"));
   }
   try {
@@ -41,20 +49,24 @@ export const updateUser = async (req, res, next) => {
   // #swagger.summary = 'Update a user'
   // #swagger.description = 'Update a user with the provided data'
   try {
+    const updateFields = {};
+
+    if (req.body.firstName !== undefined && req.body.firstName !== "") {
+      updateFields.firstName = req.body.firstName;
+    }
+    if (req.body.lastName !== undefined && req.body.lastName !== "") {
+      updateFields.lastName = req.body.lastName;
+    }
+    if (req.body.email !== undefined && req.body.email !== "") {
+      updateFields.email = req.body.email;
+    }
     const updatedUser = await User.findByIdAndUpdate(
       req.params.userId,
-      {
-        $set: {
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          email: req.body.email,
-        },
-      },
+      { $set: updateFields },
       { new: true }
     );
-    res
-      .status(200)
-      .json({ message: "Product has been updated", updatedUser: updatedUser });
+
+    res.status(200).json({ message: "User has been updated", updatedUser });
   } catch (error) {
     next(error);
   }
