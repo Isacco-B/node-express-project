@@ -7,7 +7,7 @@ import swaggerUi from "swagger-ui-express";
 // import routes
 import userRoutes from "./routes/users.route.js";
 import productRoutes from "./routes/products.route.js";
-import orderRouters from "./routes/products.route.js";
+import orderRouters from "./routes/orders.route.js";
 
 //load configuration from .env file
 dotenvFlow.config();
