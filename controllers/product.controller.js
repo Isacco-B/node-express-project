@@ -9,9 +9,11 @@ export const getProducts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 10;
-    const sortDirections = req.query.sort === "desc" ? -1 : 1;
-    const products = await Product.find()
-      .sort(sortDirections)
+    const sortDirection = req.query.sort === "desc" ? -1 : 1;
+    const products = await Product.find({
+      ...(req.query.productId && { _id: req.query.productId }),
+    })
+      .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
     res.status(200).json(products);
@@ -52,14 +54,14 @@ export const updateProduct = async (req, res, next) => {
       req.params.productId,
       {
         $set: {
-          name: req.params.name,
+          name: req.body.name,
         },
-      }
+      },
+      { new: true }
     );
-    const savedProduct = await updatedProduct.save();
     res.status(200).json({
       message: "Product has been updated",
-      savedProduct: savedProduct,
+      savedProduct: updatedProduct,
     });
   } catch (error) {
     next(error);
