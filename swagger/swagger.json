@@ -25,6 +25,72 @@
     }
   ],
   "paths": {
+    "/api/user/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get all users",
+        "description": "Returns all users",
+        "parameters": [
+          {
+            "name": "startIndex",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new user",
+        "description": "Create a new user with the provided data",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userShema"
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/user/{userId}": {
       "patch": {
         "tags": [
@@ -45,27 +111,14 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "firstName": {
-                    "example": "any"
-                  },
-                  "lastName": {
-                    "example": "any"
-                  },
-                  "email": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/updateUserShema"
               }
             }
           }
@@ -90,9 +143,72 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/product/": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get all products",
+        "description": "Returns all products",
+        "parameters": [
+          {
+            "name": "startIndex",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           },
-          "500": {
-            "description": "Internal Server Error"
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Create a new product",
+        "description": "Create a new product with the provided data",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/productShema"
+              }
+            }
           }
         }
       }
@@ -117,21 +233,14 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/productShema"
               }
             }
           }
@@ -156,23 +265,86 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/api/order/{productId}": {
-      "patch": {
+    "/api/order/": {
+      "get": {
         "tags": [
-          "Product"
+          "Order"
         ],
-        "summary": "Update a product",
-        "description": "Update a product with the provided data",
+        "summary": "Get all orders",
+        "description": "Returns all orders",
         "parameters": [
           {
-            "name": "productId",
+            "name": "startIndex",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Create a new order",
+        "description": "Create a new order with the provided data",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/orderSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/order/{orderId}": {
+      "patch": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Update an order",
+        "description": "Update an order with the provided data",
+        "parameters": [
+          {
+            "name": "orderId",
             "in": "path",
             "required": true,
             "schema": {
@@ -183,21 +355,14 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/orderSchema"
               }
             }
           }
@@ -205,13 +370,13 @@
       },
       "delete": {
         "tags": [
-          "Product"
+          "Order"
         ],
-        "summary": "Delete a product",
-        "description": "Delete a product with the provided data",
+        "summary": "Delete a orders",
+        "description": "Delete a order with the provided data",
         "parameters": [
           {
-            "name": "productId",
+            "name": "orderId",
             "in": "path",
             "required": true,
             "schema": {
@@ -222,9 +387,80 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "userShema": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "Alexander"
           },
-          "500": {
-            "description": "Internal Server Error"
+          "lastName": {
+            "type": "string",
+            "example": "Jones"
+          },
+          "email": {
+            "type": "string",
+            "example": "Alexander@gmail.com"
+          }
+        }
+      },
+      "updateUserShema": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "Lucas"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Jones"
+          },
+          "email": {
+            "type": "string",
+            "example": "Lucas@gmail.com"
+          }
+        }
+      },
+      "productShema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "apple"
+          }
+        }
+      },
+      "orderSchema": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "example": [
+              "product1Id",
+              "product2Id",
+              "product3Id"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "users": {
+            "type": "array",
+            "example": [
+              "user1Id",
+              "user2Id",
+              "user3Id"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       }
