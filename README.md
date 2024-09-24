@@ -1,6 +1,6 @@
 # Start2Impact NodeJs Project
 
-- A RESTful APIs platform to manage users, products and orders.
+- A Node.js RESTful API platform for managing users, products, and orders, featuring Swagger documentation and unit testing.
 - License: MIT
 
 Planty of Food (POF) is a company that aims to make plant-based food more accessible.
