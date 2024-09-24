@@ -1,4 +1,4 @@
-# Start2Impact NodeJs Project
+# NodeJs Project
 
 - A Node.js RESTful API platform for managing users, products, and orders, featuring Swagger documentation and unit testing.
 - License: MIT
